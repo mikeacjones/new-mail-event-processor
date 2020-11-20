@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="new-email-event" format="json">
+      <types:shape format="weave" example="examples/new-email-event.json"><![CDATA[%dw 2.0
+
+type new_email_event = Array<{|  Id: String,   ChangeKey: String|}> {"example": "[{\\\"Id\\\":\\\"AQMkADkzZGFkOWYyLWViYTQtNGViMi1iNGMxLTY5Y2Y5MzQyNjkwZABGAAADQWHpa9Q0DUmv5wJqdoEwzQcA\\/mO3chI0hUWvtunAGkLpgQAAAgEMAAAA\\/mO3chI0hUWvtunAGkLpgQAB8qjVMgAAAA==\\\",\\\"ChangeKey\\\":\\\"CQAAAA==\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="get-items" format="xml">
+      <types:example format="xml" element="{http://schemas.xmlsoap.org/soap/envelope/}Envelope" location="examples/exampleGetItems.xml"/>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#0f2d46f4-00a2-4b25-852d-f8c4b76e04af">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="new-email-event"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#94a835aa-21c6-43e1-ab60-74b828f38d4c">
+    <types:processor-declaration>
+      <types:output-event>
+        <types:message>
+          <types:payload type="get-items"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

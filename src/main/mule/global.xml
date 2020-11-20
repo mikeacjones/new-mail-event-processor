@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd
+http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mongo/current/mule-mongo.xsd">
+	<global-property doc:name="Global Property" doc:id="490c6a2f-8491-49be-be64-ff4d1748af04" name="environment" value="local" />
+	<configuration-properties doc:name="Configuration properties" doc:id="9768d650-897a-4d4d-a3bd-260266ee556d" file="config/config.${environment}.yaml" />
+	<anypoint-mq:config name="Anypoint_MQ_Config" doc:name="Anypoint MQ Config" doc:id="36c17a13-3c08-4948-8962-8753ab3bdcad" >
+		<anypoint-mq:connection clientId="${anypoint.mq.clientId}" clientSecret="${anypoint.mq.clientSecret}" />
+	</anypoint-mq:config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="5b86f1e2-c215-450b-8287-b29df3e7502f" basePath="/EWS/" >
+		<http:request-connection protocol="HTTPS" host="outlook.office365.com" port="443" >
+			<http:authentication >
+				<http:basic-authentication username="${exchange.username}" password="${exchange.password}" />
+			</http:authentication>
+		</http:request-connection>
+	</http:request-config>
+	<mongo:config name="MongoDB_Config" doc:name="MongoDB Config" doc:id="ad3c1380-b44a-480f-a4ed-63fe4ecd91a5" >
+		<mongo:connection-string-connection connectionString="mongodb+srv://${mongodb.username}:${mongodb.password}@cluster-inky-bot.yiios.mongodb.net/${mongodb.database}?retryWrites=true&amp;w=majority" />
+	</mongo:config>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="69ca8bab-22f1-4fbd-b823-5da894c73ff3" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+</mule>

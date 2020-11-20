@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Header>
+        <h:ServerVersionInfo MajorVersion="15" MinorVersion="20" MajorBuildNumber="3564" MinorBuildNumber="28" Version="V2018_01_08" xmlns:h="http://schemas.microsoft.com/exchange/services/2006/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+    </s:Header>
+    <s:Body>
+        <m:GetItemResponse xmlns:m="http://schemas.microsoft.com/exchange/services/2006/messages" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:t="http://schemas.microsoft.com/exchange/services/2006/types">
+            <m:ResponseMessages>
+                <m:GetItemResponseMessage ResponseClass="Success">
+                    <m:ResponseCode>NoError</m:ResponseCode>
+                    <m:Items>
+                        <t:Message>
+                            <t:ItemId Id="AQMkADkzZGFkOWYyLWViYTQtNGViMi1iNGMxLTY5Y2Y5MzQyNjkwZABGAAADQWHpa9Q0DUmv5wJqdoEwzQcA/mO3chI0hUWvtunAGkLpgQAAAgEMAAAA/mO3chI0hUWvtunAGkLpgQAB8qjUpAAAAA==" ChangeKey="CQAAABYAAAD+Y7dyEjSFRa+26cAaQumBAAHx6JB8"/>
+                            <t:Subject>Mazda Claim Submitted For CLASSIC MAZDA WESTSIDE (Dealer)</t:Subject>
+                            <t:Sensitivity>Normal</t:Sensitivity>
+                            <t:Body BodyType="HTML" IsTruncated="false">&lt;html&gt;&lt;head&gt;&#xD;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=utf-8"&gt;&lt;/head&gt;&lt;body&gt;&lt;table border="1" cellpadding="3" cellspacing="3"&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td align="right" width="50%" style="padding-right:10px;"&gt;Claim ID:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;000380064&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" style="padding-right:10px;"&gt;Ad ID:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;000417636&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" style="padding-right:10px;"&gt;Region:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;MW&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" style="padding-right:10px;"&gt;Dealer Code:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;61630&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Dealership/Agency:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;CLASSIC MAZDA WESTSIDE&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Dealer Band Level:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;BAND 2&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Contact First Name:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;JOHN&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Contact last Name:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;SKRTIC&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Address Line 1:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;13930 BROOKPARK ROAD&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Address Line 2:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;&amp;nbsp;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;City:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;CLEVELAND&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;State:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;OH&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Zip/Postal Code:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;44135&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Phone Number:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;216-259-0900&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Fax Number:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;216-862-2850&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;E-Mail Address:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;tskrtic@driveclassic.com&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Media Type:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;TV Spot&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Station/Call Letters:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;WOIO 19&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Ad Start Date:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;10/17/2020&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" style="padding-right:10px;"&gt;Ad End Date:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;10/18/2020&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Length of Spot:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;30 SECONDS&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Ad Cost:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;$3,200.00&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align="right" width="40%" style="padding-right:10px;"&gt;Notes:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;WOIO 19 OCTOBER INVOICE 1807249-1&lt;br&gt;&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td valign="top" align="right" width="40%" style="padding-right:10px;"&gt;Attachments:&lt;/td&gt;&lt;td style="padding-left:10px;"&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</t:Body>
+                            <t:Size>61758</t:Size>
+                            <t:DateTimeSent>2020-11-19T20:29:21Z</t:DateTimeSent>
+                            <t:DateTimeCreated>2020-11-19T20:29:23Z</t:DateTimeCreated>
+                            <t:ResponseObjects>
+                                <t:ReplyToItem/>
+                                <t:ReplyAllToItem/>
+                                <t:ForwardItem/>
+                            </t:ResponseObjects>
+                            <t:HasAttachments>false</t:HasAttachments>
+                            <t:IsAssociated>false</t:IsAssociated>
+                            <t:ToRecipients>
+                                <t:Mailbox>
+                                    <t:Name>MazdaCoop@Ansira.com</t:Name>
+                                    <t:EmailAddress>MazdaCoop@Ansira.com</t:EmailAddress>
+                                    <t:RoutingType>SMTP</t:RoutingType>
+                                    <t:MailboxType>Mailbox</t:MailboxType>
+                                </t:Mailbox>
+                            </t:ToRecipients>
+                            <t:IsReadReceiptRequested>false</t:IsReadReceiptRequested>
+                            <t:From>
+                                <t:Mailbox>
+                                    <t:Name>MazdaCoop@Ansira.com</t:Name>
+                                    <t:EmailAddress>MazdaCoop@Ansira.com</t:EmailAddress>
+                                    <t:RoutingType>SMTP</t:RoutingType>
+                                    <t:MailboxType>Mailbox</t:MailboxType>
+                                </t:Mailbox>
+                            </t:From>
+                            <t:IsRead>false</t:IsRead>
+                        </t:Message>
+                    </m:Items>
+                </m:GetItemResponseMessage>
+            </m:ResponseMessages>
+        </m:GetItemResponse>
+    </s:Body>
+</s:Envelope>

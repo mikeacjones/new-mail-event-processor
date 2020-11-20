@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:anypoint-mq="http://www.mulesoft.org/schema/mule/anypoint-mq" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/anypoint-mq http://www.mulesoft.org/schema/mule/anypoint-mq/current/mule-anypoint-mq.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mongo/current/mule-mongo.xsd">
+	<flow name="new-mail-event-processorFlow" doc:id="8950170e-60f7-4867-9f04-1bc318f122ca" >
+		<anypoint-mq:subscriber doc:name="Subscriber" doc:id="0f2d46f4-00a2-4b25-852d-f8c4b76e04af" config-ref="Anypoint_MQ_Config" destination="${anypoint.mq.destination}"/>
+		<ee:transform doc:name="Transform Message" doc:id="c5e51ad2-1761-4b33-ad05-3a2e3a7d63bc" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+
+ns soap http://schemas.xmlsoap.org/soap/envelope/
+ns m http://schemas.microsoft.com/exchange/services/2006/messages
+ns t http://schemas.microsoft.com/exchange/services/2006/types
+
+output application/xml
+---
+{
+	soap#Envelope: {
+		soap#Header: {
+			t#RequestServerVersion @(Version: "Exchange2016"): null
+		},
+		soap#Body: {
+			m#GetItem: {
+				m#ItemShape: {
+					t#BaseShape: "Default",
+					t#IncludeMimeContent: "false"
+				},
+				m#ItemIds: payload map {
+					t#ItemId @(Id: $.Id, ChangeKey: $.ChangeKey): null
+				}
+			}
+		}
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="Request" doc:id="94a835aa-21c6-43e1-ab60-74b828f38d4c" config-ref="HTTP_Request_configuration" path="Exchange.asmx"/>
+		<ee:transform doc:name="Transform Message" doc:id="02930d3e-295b-4e59-833d-5eeb740f82ea" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload.Envelope.Body.GetItemResponse.ResponseMessages.GetItemResponseMessage.Items..Message map {
+    'subject': $.Subject,
+    'from': $.From,
+    'dateTimeSent': $.DateTimeSent,
+    'dateTimeCreated': $.DateTimeCreated,
+    'body': {
+        'type': $.Body.@BodyType,
+        'truncated': $.Body.@IsTruncated,
+        'content': $.Body
+    },
+    ('attachments': $.Attachments..FileAttachment map {
+        ($ - "AttachmentId"),
+        "AttachmentId": $.AttachmentId.@Id
+    }) if ($.HasAttachments)
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<foreach doc:name="For Each" doc:id="46defaff-e288-4db3-87f9-126cd475be79" collection="#[payload]">
+			<mongo:insert-document collectionName="emails-to-jira" doc:name="Insert document" doc:id="8de8905b-2b45-482b-8752-1a71ba899b5f" config-ref="MongoDB_Config"/>
+			<set-variable value='#[payload."_id"."\$oid"]' doc:name="Set Variable" doc:id="3d7ea5c6-0b29-44aa-b6d9-ff1f6823cc3d" variableName="mongoDbId"/>
+			<foreach doc:name="For Each" doc:id="a9541bd7-628c-4b36-8bf4-ef31df9c3d51" collection="#[payload.attachments default []]">
+			<set-variable value="#[payload]" doc:name="Set Variable" doc:id="0dcfd626-378a-419f-8d1c-b04c73fb3b62" variableName="attachment" />
+			<set-variable value="#[output application/json
+var fileDestination = p('fileDestination')
+var fileExtension = (vars.attachment.Name splitBy '.')[-1]
+var fileName = uuid()
+---
+{
+	fileDestination: fileDestination,
+	fileExtension: fileExtension,
+	fileName: fileName
+}]" doc:name="Set Variable" doc:id="baa4a88b-d615-4d1c-9d28-6fe7b98159c8" variableName="fileInfo"/>
+				<mongo:update-documents doc:name="Update documents" doc:id="159f10e4-e1ee-445d-9cda-393110e5cf74" config-ref="MongoDB_Config" collectionName="emails-to-jira" target="updateResult">
+					<mongo:query ><![CDATA[#[output application/json
+---
+{
+	"_id": {
+		"\$oid": vars.mongoDbId
+	}
+}]]]></mongo:query>
+					<mongo:content-to-update ><![CDATA[#[output application/json
+---
+{
+	"files": {
+		"$(vars.attachment.AttachmentId)": "$(vars.fileInfo.fileName).$(vars.fileInfo.fileExtension)"
+	}
+}]]]></mongo:content-to-update>
+				</mongo:update-documents>
+				<ee:transform doc:name="Transform Message" doc:id="d6556075-dbcd-464c-aa53-ac862fba9fdf">
+				<ee:message>
+					<ee:set-payload><![CDATA[%dw 2.0
+ns soap http://schemas.xmlsoap.org/soap/envelope/
+ns t http://schemas.microsoft.com/exchange/services/2006/types
+ns m http://schemas.microsoft.com/exchange/services/2006/messages
+output application/xml
+---
+{
+	soap#Envelope: {
+		soap#Header: {
+			t#RequestServerVersion @(Version: "Exchange2016"): null
+		},
+		soap#Body: {
+			m#GetAttachment: {
+				m#AttachmentShape: null,
+				m#AttachmentIds: {
+					t#AttachmentId @(Id: vars.attachment.AttachmentId): null
+				}
+			}
+		}
+	}
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<http:request method="POST" doc:name="Request" doc:id="cbd89b90-0989-419f-b5ef-4b6bf0181a2a" config-ref="HTTP_Request_configuration" path="Exchange.asmx" />
+			<file:write doc:name="Write" doc:id="11c529d2-e3d8-463a-bc70-65ae4911081f" path='#["$(vars.fileInfo.fileDestination)$(vars.fileInfo.fileName).$(vars.fileInfo.fileExtension)"]'>
+				<file:content><![CDATA[#[import * from dw::core::Binaries
+
+output application/octet-stream
+---
+fromBase64(payload.Envelope.Body.GetAttachmentResponse.ResponseMessages.GetAttachmentResponseMessage.Attachments.FileAttachment.Content) as Binary]]]></file:content>
+			</file:write>
+		</foreach>
+		</foreach>
+	</flow>
+	<flow name="new-mail-event-processorFlow1" doc:id="b700a74b-52c2-4a7c-b978-005f2b38d30f" >
+		<http:listener doc:name="Listener" doc:id="0a45eab4-cb40-4ced-9ce5-ffd77884089a" config-ref="HTTP_Listener_config" path="/file/{fileId}"/>
+		<set-variable value="#[output application/json
+var fileDestination = p('fileDestination')
+---
+{
+	fileDestination: fileDestination
+}]" doc:name="Set Variable" doc:id="81be3745-ceec-4e33-85b0-25f7ae6e228a" variableName="fileInfo" />
+		<file:read doc:name="Read" doc:id="4da5f7ab-f74b-4be8-b915-6e542e31d651" path='#["$(vars.fileInfo.fileDestination)$(attributes.uriParams.fileId)"]'/>
+	</flow>
+</mule>
